@@ -1,8 +1,9 @@
-import { useState,useContext } from 'react'
+import { useState, useContext } from 'react'
 import { FaUser } from 'react-icons/fa'
-import authHandler from '../features/authHandler'
+import authHandler from '../features/AuthHandler'
 import { useNavigate } from 'react-router-dom'
-import { AuthContext } from '../features/authContext'
+import { AuthContext } from '../features/AuthContext'
+
 export default function Register () {
   const [items, setItems] = useState({
     name: '',
@@ -10,22 +11,22 @@ export default function Register () {
     password: '',
     confirmpassword: ''
   })
-  
+
   const { setUser } = useContext(AuthContext)
   const navigate = useNavigate()
-  
+
   function HandleSubmit (e) {
     e.preventDefault()
     const { name, email, password, confirmpassword } = items
-    if (password !== confirmpassword) {
-      console.log('Passwords do not match')
+    if (password !== '' && password !== confirmpassword) {
+      alert('Passwords do not match')
     } else {
       const userData = {
         name,
         email,
         password
       }
-      authHandler.RegisterHandler(userData, setUser)
+      authHandler.RegisterHandler(userData, setUser, navigate)
       setItems({
         name: '',
         email: '',
@@ -35,8 +36,6 @@ export default function Register () {
     }
 
     setUser(JSON.parse(localStorage.getItem('user')))
-
-    navigate('/')
   }
 
   return (
@@ -46,7 +45,6 @@ export default function Register () {
           <FaUser /> RSVP
         </h1>
       </section>
-
       <form onSubmit={HandleSubmit}>
         <div>
           <label htmlFor='name'>Name</label>

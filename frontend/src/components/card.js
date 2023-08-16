@@ -1,4 +1,3 @@
-import React from 'react'
 import '../styles/cardstyles.css'
 import { Link } from 'react-router-dom'
 export default function Card (props) {
@@ -7,13 +6,11 @@ export default function Card (props) {
     for (let i = 0; i < name.length; i++) {
       new_name = new_name + (name[i] === ' ' ? '-' : name[i])
     }
-    // console.log(new_name)
     return new_name
   }
   let time = new Date(props.time)
   time = new Date(time.toLocaleString())
 
-  
   return (
     <div className={`card card-${props.n}`}>
       <Link
@@ -28,7 +25,11 @@ export default function Card (props) {
       </p>
       <br />
       <p className='card__link'>
-        {`${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`} at {props.venue}{' '}
+        {`${time.getHours().toString().padStart(2, '0')}:${time
+          .getMinutes()
+          .toString()
+          .padStart(2, '0')}`}{' '}
+        at {props.venue}{' '}
       </p>
     </div>
   )

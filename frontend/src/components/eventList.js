@@ -1,26 +1,14 @@
 import { useContext, useEffect } from 'react'
-import Card from './card'
+import Card from './Card'
 import '../styles/cardstyles.css'
 import { Link } from 'react-router-dom'
-import eventHandler from '../features/eventHandler'
-import {AuthContext} from '../features/authContext'
+import eventHandler from '../features/EventHandler'
+import { AuthContext } from '../features/AuthContext'
 function EventList () {
-    const { user,allEvent, setAllEvent } = useContext(AuthContext)
-
-  // [{
-  //     name: 'Tech Trivia',
-  //     time: '12:30pm',
-  //     venue: 'LRC',
-  //     key: 1,
-  // }, {
-  //     name: 'Robo Revolution',
-  //     time: '2:30pm',
-  //     venue: 'Mech Auditorium',
-  //     key:2,
-  // }]
+  const { user, allEvent, setAllEvent } = useContext(AuthContext)
 
   useEffect(() => {
-    eventHandler.fetchData(setAllEvent)
+    eventHandler.FetchData(setAllEvent)
   }, [setAllEvent])
 
   function getNumber () {
@@ -32,9 +20,11 @@ function EventList () {
   })
   return (
     <>
-      {user&&user.access === 'Admin' && <div>
-        <Link to={'/events/eventForm'}>New Form</Link>
-      </div>}
+      {user && user.access !== 'Attendee' && (
+        <div>
+          <Link to={'/events/eventForm'}>New Form</Link>
+        </div>
+      )}
       <div className='cards'>{events}</div>
     </>
   )

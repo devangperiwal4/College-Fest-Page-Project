@@ -13,7 +13,7 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400)
     throw new Error('Please add all fields')
   }
-  
+
   // console.log(referral_user)
   // Check if user exists
   const userExists = await User.findOne({ email })
@@ -31,21 +31,21 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     name,
     email,
-    password: hashedPassword,
+    password: hashedPassword
   })
 
   if (user) {
     // Check for referral
-    if(req.query){
-      const {ref} = req.query
-      const referral_user = await User.findOne({ _id:ref })
+    if (req.query) {
+      const { ref } = req.query
+      const referral_user = await User.findOne({ _id: ref })
       referral_user.count = referral_user.count + 1
       // console.log(referral_user)
       await User.findByIdAndUpdate(ref, referral_user, {
         new: true
       })
     }
-    user.referral = user._id      
+    user.referral = user._id
 
     res.status(201).json({
       _id: user.id,
@@ -88,6 +88,14 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 // @desc    Get user data
+// @route   GET /api/users/ambassadors
+// @access  Private
+const getAmb = asyncHandler(async (req, res) => {
+  const ambs = await User.find({ access: 'Ambassador' })
+  res.status(200).json(ambs)
+})
+
+// @desc    Get user data
 // @route   GET /api/users/me
 // @access  Private
 const getMe = asyncHandler(async (req, res) => {
@@ -95,9 +103,9 @@ const getMe = asyncHandler(async (req, res) => {
 })
 
 // Generate JWT
-const generateToken = (id) => {
+const generateToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '30d',
+    expiresIn: '30d'
   })
 }
 
@@ -105,4 +113,5 @@ module.exports = {
   registerUser,
   loginUser,
   getMe,
+  getAmb
 }

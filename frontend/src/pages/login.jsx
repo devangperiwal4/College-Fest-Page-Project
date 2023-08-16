@@ -1,8 +1,8 @@
 import { useState, useContext } from 'react'
-import authHandler from '../features/authHandler'
+import authHandler from '../features/AuthHandler'
 import { FaSignInAlt } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
-import { AuthContext } from '../features/authContext'
+import { AuthContext } from '../features/AuthContext'
 function Login () {
   const [items, setItems] = useState({
     email: '',
@@ -20,15 +20,11 @@ function Login () {
       email,
       password
     }
-    authHandler.LoginHandler(userData, setUser)
+    authHandler.LoginHandler(userData, setUser, navigate)
     setItems({
       email: '',
       password: ''
     })
-
-    // setUser(JSON.parse(localStorage.getItem('user')))
-    // console.log(user)
-    navigate('/')
   }
 
   return (

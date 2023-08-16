@@ -1,26 +1,27 @@
 // import './App.css';
-import EventDetail from './components/eventDetail'
-import Footer from './components/footer'
-import Navbar from './components/navbar'
-import About from './pages/about'
-import Contact from './pages/contact'
-import Faqs from './pages/faqs'
-import HomePage from './pages/homePage'
+import EventDetail from './components/EventDetail'
+import Footer from './components/Footer'
+import Navbar from './components/Navbar'
+import About from './pages/About'
+import Contact from './pages/Contact'
+import Faqs from './pages/Faqs'
+import HomePage from './pages/HomePage'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Login from './pages/login'
-import Register from './pages/register'
-import EventForm from './pages/eventForm'
-import { AuthContext } from './features/authContext'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import EventForm from './pages/EventForm'
+import { AuthContext } from './features/AuthContext'
 import { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
+// import Announcements from './components/Announcements'
 
 function App () {
   const [allEvent, setAllEvent] = useState([])
-  const [user, setUser] = useState(localStorage.getItem('user')
-)
+  const [user, setUser] = useState(localStorage.getItem('user'))
 
   return (
-    <div className='App'>
+    <div className='App m-0 h-100'>
+      {/* <Announcements /> */}
       <Router>
         <AuthContext.Provider value={{ user, setUser, allEvent, setAllEvent }}>
           <Navbar />
@@ -34,9 +35,9 @@ function App () {
             <Route exact path='/register' element={<Register />} />
             <Route exact path='/events/eventform' element={<EventForm />} />
           </Routes>
-          <Footer />
         </AuthContext.Provider>
       </Router>
+      <Footer />
     </div>
   )
 }

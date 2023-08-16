@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { useParams } from 'react-router-dom'
 
 // Register event
 const PostEventHandler = async (formData, user, allEvent, setAllEvent) => {
@@ -18,14 +17,16 @@ const PostEventHandler = async (formData, user, allEvent, setAllEvent) => {
     )
     const data = await response.data
     if (data) {
-        setAllEvent(() => { return { ...allEvent, formData } })
+      setAllEvent(() => {
+        return { ...allEvent, formData }
+      })
     }
   } catch (err) {
     console.log(err)
   }
 }
 
-const fetchData = async setAllEvent => {
+const FetchData = async setAllEvent => {
   try {
     const res = await axios.get('http://localhost:5000/api/events')
     const data = await res.data
@@ -38,9 +39,7 @@ const fetchData = async setAllEvent => {
 
 const GetOneEvent = async (name, setCurrEvent) => {
   try {
-    // const { name } = useParams()
-    // console.log(name)
-    const res = await axios.get('http://localhost:5000/api/events/'+name)
+    const res = await axios.get('http://localhost:5000/api/events/' + name)
     const data = await res.data
 
     // console.log(data)
@@ -49,9 +48,9 @@ const GetOneEvent = async (name, setCurrEvent) => {
     console.log(err)
   }
 }
-const eventHandler = {
-  fetchData,
+const EventHandler = {
+  FetchData,
   PostEventHandler,
   GetOneEvent
 }
-export default eventHandler
+export default EventHandler

@@ -10,6 +10,7 @@ p{
 }
 body{
   display:block;
+  /* background-color: #cd7aeb; */
 }
 
 a,li,ul{
@@ -22,18 +23,18 @@ a,li,ul{
 .header {
   display: block;
   align-items: center;
-  background: linear-gradient(90deg, #cd7aeb 1.18%, #927c99 100%);
+  background: linear-gradient(90deg, rgb(160, 92, 235) 1.18%, rgb(148, 108, 245) 100%);
   color: white;
   border-bottom: 1px solid #e6e6e6;
-  /* margin-bottom: 60px; */
-  padding: 18px;
+  padding-bottom: 0px;
+  padding-top: 18px;
 }
 
 .header ul {
   display: flex;
   align-items: center;
   padding: 0px 18px;
-  margin-top:10px;
+  /* margin-top:10px; */
 }
 
 .heading{
@@ -41,7 +42,7 @@ a,li,ul{
   padding: 0px ;
   justify-content: space-between;
   font-size: 25px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 .page-heading{
   display: flex;
@@ -57,6 +58,7 @@ a,li,ul{
   /* background-color: aqua; */
   max-width:100%;
   padding-left: 0%;
+  padding-bottom: 0%;
 }
 .header li,.second-line li{
   /* background-color: aqua; */
@@ -78,20 +80,20 @@ a,li,ul{
 }
 
 .container{
-  margin:0px;
+  margin:0px 10%;
   padding:10px;
   margin-bottom: 55px;
 }
 
 .faq-items{
-  display: flex;
+  display: block;
   flex-wrap: nowrap;
   margin: 10px;
-  margin-left: 25px;
+  /* margin-left: 25px; */
   padding: 6px;
   font-size: 18px;
   font-family: cursive;
-  background-color: red;
+  background-color: rgb(233, 120, 120);
   /* linear-gradient(red,pink); */
 }
 
@@ -104,7 +106,7 @@ a,li,ul{
   font-size: 14px; 
   font-family: Arial, sans-serif;
   padding: 20px;
-  margin-top: 30px;
+  margin-bottom: 0px;
   border-top: 1px solid #ccc; 
 }
 

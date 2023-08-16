@@ -1,41 +1,35 @@
 import { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../features/authContext'
+import { AuthContext } from '../features/AuthContext'
 import { useParams } from 'react-router-dom'
-import eventHandler from '../features/eventHandler'
+import eventHandler from '../features/EventHandler'
 import { Link } from 'react-router-dom'
+import EventForm from '../pages/EventForm'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import '../styles/eventdetail.css'
+
 export default function EventDetail () {
   const [currEvent, setCurrEvent] = useState({
-    name: 'Robo Revolution',
-    time: '2023-01-15T07:30:00.000Z',
-    venue: 'Mech Auditorium',
-    budget: 40000,
-    sponsors: ['Shree Electricals', 'Goldmedal'],
-    payments: [
-      {
-        name: 'Speakers',
-        payment: '2500'
-      },
-      {
-        name: 'Host',
-        payment: '6000'
-      },
-      {
-        name: 'Accomodation',
-        payment: '4000'
-      }
-    ]
+    name: '',
+    venue: '',
+    time: '',
+    sponsors: [],
+    budget: 0,
+    payments: []
   })
+  const [edit, setEdit] = useState(false)
   const { name } = useParams()
   // console.log(useParams())
+
   useEffect(() => {
     eventHandler.GetOneEvent(name, setCurrEvent)
   }, [])
 
-  const { user } = useContext(AuthContext)
   // setCurrEvent(() => {
   //   allEvent.filter()
   // })
-  const [admin, setAdmin] = useState(user && user.access !== 'Attendee')
+
+  const { user } = useContext(AuthContext)
+  const admin = user && user.access !== 'Attendee'
   // console.log(admin)
 
   const sponsorsList = currEvent.sponsors.map(sponsor => (
@@ -53,57 +47,91 @@ export default function EventDetail () {
 
   let time = new Date(currEvent.time)
   time = new Date(time.toLocaleString())
+  const day = currEvent.time.slice(8, 10)
+  const month = currEvent.time.slice(5, 7)
+  const year = currEvent.time.slice(0, 4)
+  const newDate = day + '/' + month + '/' + year
+  const suffix = time.getHours() >= 12 ? 'pm' : 'am'
 
-  // console.log(currEvent)
   return (
-    <div className='container'>
-      <div className='event-header'>
-        <h2 className='page-heading'>{currEvent.name}</h2>
-        {admin && <h3>Budget : {currEvent.budget}</h3>}
-      </div>
-      <div>
-        {`${time.getHours().toString().padStart(2, '0')}:${time
-          .getMinutes()
-          .toString()
-          .padStart(2, '0')}`}{' '}
-        at {currEvent.venue}
-      </div>
-      <p>
-        This event allows students to showcase their skills in designing and
-        programming robots to complete specific tasks.
-      </p>
-      <p>
-        {' '}
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed enim
-        dolorum eligendi, sint suscipit neque! Perspiciatis harum repellat
-        consequuntur eius accusamus adipisci soluta illum distinctio explicabo
-        reiciendis! Aspernatur minima maiores iure. Magni architecto porro ipsum
-        dolorum distinctio ea tempora nemo? Aspernatur dignissimos ipsam sint
-        sequi fuga praesentium dolorem porro minus.
-      </p>
-      <p>
-        {' '}
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed enim
-        dolorum eligendi, sint suscipit neque! Perspiciatis harum repellat
-        consequuntur eius accusamus adipisci soluta illum distinctio explicabo
-        reiciendis! Aspernatur minima maiores iure. Magni architecto porro ipsum
-        dolorum distinctio ea tempora nemo? Aspernatur dignissimos ipsam sint
-        sequi fuga praesentium dolorem porro minus.
-      </p>
-      <div>{sponsorsList}</div>
-      {admin && (
-        <table>
-          <thead>Payments</thead>
-          <tr>
-            <th>Name</th>
-            <th>Payment</th>
-          </tr>
-          {paymentsList}
-        </table>
+    <>
+      {edit ? (
+        <EventForm currEvent={currEvent} setEdit={setEdit} />
+      ) : (
+        <div className='container w-100'>
+          <div className='d-flex' style={{ maxWidth: '100%' }}>
+            <h2 className='h2 text-center'>{currEvent.name}</h2>
+            {admin && (
+              <div className='d-flex' style={{ marginLeft: 'auto' }}>
+                <div>Budget: {`${currEvent.budget}`}</div>
+                <button
+                  className='center'
+                  onClick={() => setEdit(prev => !prev)}
+                  style={{
+                    width: '40%'
+                  }}
+                >
+                  EDIT
+                </button>
+              </div>
+            )}
+          </div>
+          <div className='h6'>
+            {`${time.getHours().toString().padStart(2, '0')}:${time
+              .getMinutes()
+              .toString()
+              .padStart(2, '0')}${suffix} on ${newDate} 
+            at ${currEvent.venue}`}
+          </div>
+          <p>
+            This event allows students to showcase their skills in designing and
+            programming robots to complete specific tasks.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed enim
+            dolorum eligendi, sint suscipit neque! Perspiciatis harum repellat
+            consequuntur eius accusamus adipisci soluta illum distinctio
+            explicabo reiciendis! Aspernatur minima maiores iure. Magni
+            architecto porro ipsum dolorum distinctio ea tempora nemo?
+            Aspernatur dignissimos ipsam sint sequi fuga praesentium dolorem
+            porro minus.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed enim
+            dolorum eligendi, sint suscipit neque! Perspiciatis harum repellat
+            consequuntur eius accusamus adipisci soluta illum distinctio
+            explicabo reiciendis! Aspernatur minima maiores iure. Magni
+            architecto porro ipsum dolorum distinctio ea tempora nemo?
+            Aspernatur dignissimos ipsam sint sequi fuga praesentium dolorem
+            porro minus.
+          </p>
+          <br />
+          {currEvent.length !== 0 && (
+            <>
+              <h4>SPONSORS</h4>
+              <div className='d-flex'>{sponsorsList}</div>
+            </>
+          )}
+          {admin && (
+            <table>
+              <thead>Payments</thead>
+              <tr>
+                <th>Name</th>
+                <th>Payment</th>
+              </tr>
+              {paymentsList}
+            </table>
+          )}
+          <div>
+            <Link
+              className='nav-link text-center text-body-emphasis p-2 mt-2 active'
+              to='/'
+            >
+              Back to Home Page
+            </Link>
+          </div>
+        </div>
       )}
-      <div>
-        <Link to='/'>Back to Home Page</Link>
-      </div>
-    </div>
+    </>
   )
 }

@@ -1,0 +1,33 @@
+{
+    name: 'Robo Revolution',
+    time: '2023-01-15T07:30:00.000Z',
+    venue: 'Mech Auditorium',
+    budget: 40000,
+    sponsors: ['Shree Electricals', 'Goldmedal'],
+    payments: [
+      {
+        name: 'Speakers',
+        payment: '2500'
+      },
+      {
+        name: 'Host',
+        payment: '6000'
+      },
+      {
+        name: 'Accomodation',
+        payment: '4000'
+      }
+    ]
+}
+
+  // [{
+  //     name: 'Tech Trivia',
+  //     time: '12:30pm',
+  //     venue: 'LRC',
+  //     key: 1,
+  // }, {
+  //     name: 'Robo Revolution',
+  //     time: '2:30pm',
+  //     venue: 'Mech Auditorium',
+  //     key:2,
+  // }]

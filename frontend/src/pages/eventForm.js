@@ -1,22 +1,48 @@
-import { useContext, useState } from 'react'
-import eventHandler from '../features/eventHandler'
-import { AuthContext } from '../features/authContext'
+import { useContext, useEffect, useState } from 'react'
+import eventHandler from '../features/EventHandler'
+import { AuthContext } from '../features/AuthContext'
 
-export default function EventForm () {
+export default function EventForm ({ currEvent, setEdit }) {
   // Get user from localStorage
   const { user, allEvent, setAllEvent } = useContext(AuthContext)
   // console.log(user)
 
+  const formatDateToDateTimeLocal = date => {
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    const hours = String(date.getHours()).padStart(2, '0')
+    const minutes = String(date.getMinutes()).padStart(2, '0')
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`
+  }
+  const currentDate = new Date()
+
   const [formData, setFormData] = useState({
     name: '',
     venue: '',
-    time: new Date(),
+    time: formatDateToDateTimeLocal(currentDate),
     sponsors: [],
     budget: 0,
     payments: []
   })
 
   const [sponsorData, setSponsorData] = useState('')
+
+  const [items, setItems] = useState([])
+
+  useEffect(() => {
+    // console.log(currEvent)
+    if (currEvent) {
+      setFormData(() => {
+        const time = new Date(currEvent.time)
+
+        return { ...currEvent, time: formatDateToDateTimeLocal(time) }
+      })
+      setItems(currEvent.payments)
+      setSponsorData(currEvent.sponsors)
+    }
+  }, [])
 
   function handleclick (e) {
     const { name, value } = e.target
@@ -25,13 +51,6 @@ export default function EventForm () {
       [name]: value
     }))
   }
-
-  const [items, setItems] = useState([
-    {
-      name: '',
-      payment: 0
-    }
-  ])
 
   const handleChange = (e, index) => {
     const newItems = [...items]
@@ -52,12 +71,14 @@ export default function EventForm () {
     setItems(newItems)
   }
 
-  function HandleSubmit (e) {
+  function handleSubmit (e) {
     e.preventDefault()
-    formData.sponsors = sponsorData.split(',')
+    formData.sponsors =
+      sponsorData.split(',')[0] !== '' ? sponsorData.split(',') : []
     formData.payments = items
-    console.log(formData)
-    
+    formData.time = new Date(formData.time)
+    // console.log(formData)
+    if (setEdit) setEdit(prev => !prev)
     eventHandler.PostEventHandler(formData, user, allEvent, setAllEvent)
   }
 
@@ -68,7 +89,7 @@ export default function EventForm () {
       ) : (
         <>
           <h1 className='heading'>Enter Event Details</h1>
-          <form onSubmit={HandleSubmit}>
+          <form onSubmit={handleSubmit}>
             <label htmlFor='name'>Enter Event Name</label>
             <input
               type={'text'}
@@ -107,7 +128,7 @@ export default function EventForm () {
                 setFormData(prevState => {
                   return {
                     ...prevState,
-                    time: new Date(e.target.value)
+                    time: e.target.value
                   }
                 })
               }

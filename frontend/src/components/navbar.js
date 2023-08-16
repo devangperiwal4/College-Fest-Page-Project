@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom'
 import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa'
 import '../App.css'
 import { useState, useContext, useEffect } from 'react'
-import authHandler from '../features/authHandler'
-import { AuthContext } from '../features/authContext'
+import authHandler from '../features/AuthHandler'
+import { AuthContext } from '../features/AuthContext'
 
 export default function Navbar () {
   // Get user from localStorage
@@ -19,7 +19,9 @@ export default function Navbar () {
     <div className='header'>
       <div className='heading'>
         <h2 className='heading-text'>
-          <Link to={'/'}>Radiance Fest</Link>
+          <Link className='nav-link link-dark px-2 active' to={'/'}>
+            Radiance Fest
+          </Link>
         </h2>
         <ul>
           {user ? (
@@ -30,16 +32,20 @@ export default function Navbar () {
             </button>
           ) : (
             <>
-              <li>
-                <Link to='/login'>
-                  <FaSignInAlt /> Login
-                </Link>
-              </li>
-              <li>
-                <Link to='/register'>
-                  <FaUser /> RSVP
-                </Link>
-              </li>
+              <button className='btn'>
+                <li>
+                  <Link to='/login' className='nav-link link-dark px-2 active'>
+                    <FaSignInAlt /> Login
+                  </Link>
+                </li>
+              </button>
+              <button className='btn'>
+                <li>
+                  <Link to={'/register'} className='link-dark px-2'>
+                    <FaUser /> RSVP
+                  </Link>
+                </li>
+              </button>
             </>
           )}
         </ul>
@@ -47,16 +53,24 @@ export default function Navbar () {
       <div className='second-line'>
         <ul>
           <li>
-            <Link to='/about'>About </Link>
+            <Link to='/about' className='nav-link link-dark px-2 active'>
+              About{' '}
+            </Link>
           </li>
           <li>
-            <Link to='/contact'>Contact </Link>
+            <Link to='/contact' className='nav-link link-dark px-2 active'>
+              Contact{' '}
+            </Link>
           </li>
           <li>
-            <Link to='/faqs'>FAQs </Link>
+            <Link to='/faqs' className='nav-link link-dark px-2 active'>
+              FAQs{' '}
+            </Link>
           </li>
           <li>
-            <Link to='/gallery'>Photo Gallery </Link>
+            <Link to='/gallery' className='nav-link link-dark px-2 active'>
+              Photo Gallery{' '}
+            </Link>
           </li>
         </ul>
       </div>
